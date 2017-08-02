@@ -3,8 +3,8 @@
 	<serviceAliases>
 		<alias>cubanetnews</alias>
 	</serviceAliases>
-	<serviceDescription>Muestra los titulares de la Prensa Independiente CubaNet y permite leer las noticias publicadas en dicho diario.</serviceDescription>
-	<creatorEmail>ADD CREATOR EMAIL HERE</creatorEmail>
+	<serviceDescription>Muestra los titulares del periodico independiente CubaNet y permite leer las noticias publicadas en dicho diario</serviceDescription>
+	<creatorEmail>falcocom25@gmail.com</creatorEmail>
 	<serviceCategory>informativo</serviceCategory>
 	<serviceUsage>
 		<![CDATA[

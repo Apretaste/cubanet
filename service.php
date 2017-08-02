@@ -13,6 +13,7 @@
 		public function _main(Request $request)
 		{
 			$response = new Response();
+			$response->setEmailLayout('cubanet.tpl');
 			$response->setResponseSubject("Noticias de hoy");
 			$response->createFromTemplate("allStories.tpl", $this->allStories());
 			return $response;
@@ -30,6 +31,7 @@
 			if (empty($request->query))
 			{
 				$response = new Response();
+				$response->setEmailLayout('cubanet.tpl');
 				$response->setResponseSubject("Busqueda en blanco");
 				$response->createFromText("Su busqueda parece estar en blanco, debe decirnos sobre que tema desea leer");
 				return $response;
@@ -46,6 +48,7 @@
 			if(empty($articles))
 			{
 				$response = new Response();
+				$response->setEmailLayout('cubanet.tpl');
 				$response->setResponseSubject("Su busqueda no genero resultados");
 				$response->createFromText("Su busqueda <b>{$request->query}</b> no gener&oacute; ning&uacute;n resultado. Por favor cambie los t&eacute;rminos de b&uacute;squeda e intente nuevamente.");
 				return $response;
@@ -57,6 +60,7 @@
 			);
 
 			$response = new Response();
+			$response->setEmailLayout('cubanet.tpl');
 			$response->setResponseSubject("Buscar: " . $request->query);
 			$response->createFromTemplate("searchArticles.tpl", $responseContent);
 			return $response;
@@ -74,6 +78,7 @@
 			if (empty($request->query))
 			{
 				$response = new Response();
+				$response->setEmailLayout('cubanet.tpl');
 				$response->setResponseSubject("Busqueda en blanco");
 				$response->createFromText("Su busqueda parece estar en blanco, debe decirnos que articulo quiere leer");
 				return $response;
@@ -96,6 +101,7 @@
 			$subject = "La historia que usted pidio";
 
 			$response = new Response();
+			$response->setEmailLayout('cubanet.tpl');
 			$response->setResponseSubject($subject);
 			$response->createFromTemplate("story.tpl", $responseContent, $images);
 			return $response;
@@ -112,6 +118,7 @@
 			if (empty($request->query))
 			{
 				$response = new Response();
+				$response->setEmailLayout('cubanet.tpl');
 				$response->setResponseSubject("Categoria en blanco");
 				$response->createFromText("Su busqueda parece estar en blanco, debe decirnos sobre que categor&iacute;a desea leer");
 				return $response;
@@ -123,6 +130,7 @@
 			);
 
 			$response = new Response();
+			$response->setEmailLayout('cubanet.tpl');
 			$response->setResponseSubject("Categoria: ".$request->query);
 			$response->createFromTemplate("catArticles.tpl", $responseContent);
 			return $response;
@@ -143,25 +151,25 @@
 
 			// Collect saearch by term
 			$articles = array();
- 			$crawler->filter('ul.entry-list.isotop-item.clearfix li.element')->each(function($item, $i) use (&$articles) 
- 			{ 
- 				// only allow news, no media or gallery 
- 				if($item->filter('.ico')->count()>0) return; 
-  
- 				// get data from each row 
- 				$title = $item->filter('h4.entry-title a')->text(); 
- 				$date = $item->filter('header span.entry-date')->text(); 
- 				$description = $item->filter('p')->text(); 
- 				$link = $item->filter('a.more-link')->attr("href"); 
-  
- 				// store list of articles 
- 				$articles[] = array( 
- 					"pubDate" => $date, 
- 					"description" => $description, 
- 					"title"	=> $title, 
+ 			$crawler->filter('ul.entry-list.isotop-item.clearfix li.element')->each(function($item, $i) use (&$articles)
+ 			{
+ 				// only allow news, no media or gallery
+ 				if($item->filter('.ico')->count()>0) return;
+
+ 				// get data from each row
+ 				$title = $item->filter('h4.entry-title a')->text();
+ 				$date = $item->filter('header span.entry-date')->text();
+ 				$description = $item->filter('p')->text();
+ 				$link = $item->filter('a.more-link')->attr("href");
+
+ 				// store list of articles
+ 				$articles[] = array(
+ 					"pubDate" => $date,
+ 					"description" => $description,
+ 					"title"	=> $title,
  					"link" => $link
- 				); 
- 			}); 
+ 				);
+ 			});
 
 
 			return $articles;
@@ -191,7 +199,7 @@
 						$pubDate = $item->pubDate;
 						$dc = $item->children("http://purl.org/dc/elements/1.1/");
 		    			$author = $dc->creator;
-						
+
 						$articles[] = array(
 							"title" => $title,
 							"link" => $link,
@@ -315,7 +323,7 @@
 		 *
 		 * @param String
 		 * @return String
-		 * 
+		 *
 		 */
 		private function urlSplit($url)
 		{
@@ -337,6 +345,7 @@
 			error_log("WARNING: ERROR ON SERVICE CUBANET");
 
 			$response = new Response();
+			$response->setEmailLayout('cubanet.tpl');
 			$response->setResponseSubject("Error en peticion");
 			$response->createFromText("Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.");
 			return $response;
