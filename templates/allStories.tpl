@@ -2,7 +2,7 @@
 	<tr>
 		<td><h1>Noticias de hoy</h1></td>
 		<td align="right" valign="top">
-			{button href="CUBANET BUSCAR" popup="true" size="small" body="Complete el asunto agregando una palabra o frase a buscar a continuacion del texto CUBANET BUSCAR y envie este email" caption="&#10004; Buscar"}
+			{button href="CUBANET BUSCAR" popup="true" size="small" desc="Agregue una palabra o frase a buscar" caption="&#10004; Buscar"}
 		</td>
 	</tr>
 </table>
