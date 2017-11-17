@@ -267,7 +267,6 @@
 			// create a new client
 			$client = new Client();
 			$guzzle = $client->getClient();
-			$guzzle->setDefaultOption('verify', false);
 			$client->setClient($guzzle);
 
 			// create a crawler

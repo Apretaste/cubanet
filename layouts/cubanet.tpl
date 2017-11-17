@@ -73,7 +73,7 @@
 				<!--footer-->
 				<tr>
 					<td align="center" bgcolor="#F2F2F2" style="padding: 20px 0px;">
-						<small>&iquest;Tienes internet? Revisa <a href="https://www.cubanet.org">cubanet.org</a></small>
+						<small>Tambien puedes visitar <a href="https://www.cubanet.org" target="_blank">cubanet.org</a></small>
 					</td>
 				</tr>
 			</table>
