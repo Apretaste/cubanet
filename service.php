@@ -293,7 +293,6 @@
 					$imgName = $this->utils->generateRandomHash() . "." . pathinfo($imgUrl, PATHINFO_EXTENSION);
 					$img = \Phalcon\DI\FactoryDefault::getDefault()->get('path')['root'] . "/temp/$imgName";
 					file_put_contents($img, file_get_contents($imgUrl));
-					$this->utils->optimizeImage($img, 300);
 				}
 			}
 
