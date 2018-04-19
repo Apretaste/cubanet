@@ -273,14 +273,14 @@
 			$crawler = $client->request('GET', "https://www.cubanet.org/$query");
 
 			// search for title
-			$title = $crawler->filter('header h4.entry-title')->text();
+			$title = $crawler->filter('header h1.entry-title')->text();
 
 			// get the intro
 			$titleObj = $crawler->filter('header div>p');
 			$intro = $titleObj->count()>0 ? $titleObj->text() : "";
 
 			// get the images
-			$imageObj = $crawler->filter('div.contents-box img.size-full');
+			$imageObj = $crawler->filter('figure img.size-full');
 			$imgUrl = ""; $imgAlt = ""; $img = "";
 			if ($imageObj->count() != 0)
 			{
@@ -297,7 +297,7 @@
 			}
 
 			// get the array of paragraphs of the body
-			$paragraphs = $crawler->filter('div.contents-box p');
+			$paragraphs = $crawler->filter('div.entry-content p');
 			$content = array();
 			foreach ($paragraphs as $p)
 			{
