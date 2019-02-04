@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col s10">
+        <h1>Noticias de hoy</h1>
+    </div>
+    <div class="col s2 align-right">
+        <input id="searchQuery" type="text" class="validate" value="">
+        <button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CUBANET BUSCAR ' + $('#searchQuery').val()})">
+            Buscar
+            <i class="material-icons right">search</i>
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <% articles.forEach(function(article) { %>
+        <h2><a href="#!" onclick="apretaste.send({command:'CUBANET HISTORIA', data:{link:'<%= article['link'] %>'}})"><%= article['title'] %></a></h2>
+
+        <p><%= article['description'].substr(0,200) %></p>
+        <p><%= article['author'] %></p>
+        <p><%= article['pubDate'] %></p>
+
+        <% article['category'].forEach(function(category) { %>
+
+            <a href="#!" onclick="apretaste.send({command:'CUBANET CATEGORIA <%= category %>', data:{}})"><%= category %></a>
+
+        <% }); %>
+    <% }); %>
+</div>

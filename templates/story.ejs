@@ -1,0 +1,24 @@
+<h1> <%= title %></h1>
+
+<p> <%= intro %></p>
+
+<% if (img) { %>
+	<img src="<%= img %>" alt="<%= imgAlt %>" width="100%" %>
+<% } %>
+
+<section>
+	<p> <%= content.content %></p>
+</section>
+
+
+<button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'CUBANET'})">
+    M&aacute;s noticias
+    <i class = "material-icons right">feed</i>
+</button>
+
+<button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'PIZARRA Miren esto:  <%= url %>'})">
+    Compartir
+    <i class = "material-icons right">feed</i>
+</button>
+
+

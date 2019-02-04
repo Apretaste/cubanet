@@ -1,0 +1,18 @@
+<h1>Buscar:
+    <% search %>
+</h1>
+
+<% article.forEach(function(article) { %>
+<small>
+    <font color = "gray">
+        <% article['pubDate'] %>
+    </font></small><br/>    <b>
+    <a href = "#!" onclick = "apretaste.send({command:'CUBANET HISTORIA <% article.link %>', data:{link:'<%= article['link'] %>'}})"><%= article['title'] %></a>
+</b>
+<% article.description.substr(0, 200) %><br/>
+<% }); %>
+
+<button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'CUBANET'})">
+    Titulares
+    <i class = "material-icons right">feed</i>
+</button>
