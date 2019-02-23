@@ -1,24 +1,35 @@
-<h1> <%= title %></h1>
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <h1> <%= title %></h1>
 
-<p> <%= intro %></p>
+        <p> <%= intro %></p>
+    </div>
+</div>
 
-<% if (img) { %>
-	<img src="<%= img %>" alt="<%= imgAlt %>" width="100%" %>
-<% } %>
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <% if (img) { %>
+            <img src="<%= img %>" alt="<%= imgAlt %>" width="100%">
+        <% } %>
+    </div>
+</div>
 
-<section>
-	<p> <%= content.content %></p>
-</section>
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <section> <p> <%= content.content %></p> </section>
 
+        <button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'CUBANET'})">
+            M&aacute;s noticias
+            <i class = "material-icons right">feed</i>
+        </button>
+    </div>
+</div>
 
-<button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'CUBANET'})">
-    M&aacute;s noticias
-    <i class = "material-icons right">feed</i>
-</button>
-
-<button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'PIZARRA Miren esto:  <%= url %>'})">
-    Compartir
-    <i class = "material-icons right">feed</i>
-</button>
-
-
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'PIZARRA', data: {query: 'Miren esto:  ' + url}})">
+            Compartir
+            <i class = "material-icons right">feed</i>
+        </button>
+    </div>
+</div>
