@@ -13,7 +13,6 @@ class Service
 	 **/
 	public function _main(Request $request, Response &$response)
 	{
-		$response = new Response();
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("allStories.ejs", $this->allStories());
 	}
@@ -84,7 +83,7 @@ class Service
 	 *
 	 * @return void
 	 **/
-	public function _historia(Request $request)
+	public function _historia(Request $request, Response &$response)
 	{
 		// no allow blank entries
 		if(empty($request->input->data->query))
