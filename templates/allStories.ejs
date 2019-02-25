@@ -1,18 +1,5 @@
 <div class="row">
     <div class="col s12 m12 xl12">
-        <h1>Noticias de hoy</h1>
-    </div>
-    <div class="col s2 align-right">
-        <input id="searchQuery" type="text" class="validate" value="">
-        <button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CUBANET BUSCAR', data: {query: $('#searchQuery').val()}})">
-            Buscar
-            <i class="material-icons right">search</i>
-        </button>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col s12 m12 xl12">
         <% articles.forEach(function(article) { %>
             <h2><a href="#!" onclick="apretaste.send({command:'CUBANET HISTORIA', data:{query: article.link}})"><%= article.title %></a></h2>
             <p><%= article.description.substr(0, 200) %></p>
@@ -22,5 +9,24 @@
                 <a href="#!" onclick="apretaste.send({command:'CUBANET CATEGORIA', data:{query: category}})"><%= category %></a>
             <% }); %>
         <% }); %>
+    </div>
+</div>
+
+<div class = "fixed-action-btn">
+    <a href = "#searchModal" class = "btn-floating btn-large waves-effect waves-light green modal-trigger">
+        <i class = "large material-icons">search</i>
+    </a>
+</div>
+
+<div id = "searchModal" class = "modal bottom-sheet">
+    <div class = "modal-content">
+        <div class = "input-field">
+            <textarea id = "searchQuery" class = "materialize-textarea"></textarea>
+            <label for = "note">Buscar</label>
+        </div>
+    </div>
+    <div class = "modal-footer">
+        <a href = "#!" class = "modal-close waves-effect waves-light btn-flat">Cerrar</a>
+        <a onclick = "sendSearch()" class = "modal-close waves-effect waves-green btn-flat">Buscar</a>
     </div>
 </div>

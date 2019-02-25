@@ -14,7 +14,7 @@ class Service
 	public function _main(Request $request, Response &$response)
 	{
 		$response->setLayout('cubanet.ejs');
-		$response->setTemplate("allStories.ejs", $this->allStories());
+		$response->setTemplate("allStories.ejs", ["articles" => $this->allStories()]);
 	}
 
 	/**
@@ -247,6 +247,7 @@ class Service
 	 */
 	private function allStories()
 	{
+
 		$page = Utils::file_get_contents_curl("https://www.cubanet.org/feed");
 
 		//tuve que usar simplexml debido a que el feed provee los datos dentro de campos cdata
