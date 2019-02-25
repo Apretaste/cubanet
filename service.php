@@ -14,7 +14,7 @@ class Service
 	public function _main(Request $request, Response &$response)
 	{
 		$response->setLayout('cubanet.ejs');
-		$response->setTemplate("allStories.ejs", ["articles" => $this->allStories()]);
+		$response->setTemplate("allStories.ejs", $this->allStories());
 	}
 
 	/**
