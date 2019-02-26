@@ -5,8 +5,8 @@
             <p><%= (article.description + '').substr(0, 200) %></p>
             <p><%= article.author %></p>
             <p><%= formatDate(article.pubDate) %></p>
-            <% article.category.forEach(function(category) { %>
-                <a href="#!" onclick="apretaste.send({command:'CUBANET CATEGORIA', data:{query: category}})"><%= category %></a>
+            <% article.category.forEach(function(cat) { %>
+                <a href="#!" onclick="apretaste.send({command:'CUBANET CATEGORIA', data:{query: cat}})"><%= cat %></a>
             <% }); %>
         <% }); %>
     </div>
