@@ -22,16 +22,16 @@ class Service
 		foreach($content->channel->item as $item)
 		{
 			// get all parameters
-			$title = $item->title;
-			$link = $this->urlSplit($item->link);
-			$description = $item->description;
-			$pubDate = $item->pubDate;
+			$title = $item->title. "";
+			$link = $this->urlSplit($item->link ."");
+			$description = $item->description ."";
+			$pubDate = $item->pubDate . "";
 			$dc = $item->children("http://purl.org/dc/elements/1.1/");
-			$author = $dc->creator;
+			$author = $dc->creator . "";
 			$category = [];
 			foreach($item->category as $currCategory)
 			{
-				$category[] = $currCategory;
+				$category[] = $currCategory."";
 			}
 			$categoryLink = [];
 
@@ -46,6 +46,7 @@ class Service
 			];
 		}
 
+		print_r($articles);
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("allStories.ejs", ["articles" => $articles]);
 	}
