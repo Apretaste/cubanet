@@ -2,7 +2,7 @@
     <div class="col s12 m12 xl12">
         <% articles.forEach(function(article) { %>
             <h2><a href="#!" onclick="apretaste.send({command:'CUBANET HISTORIA', data:{query: article.link}})"><%= article.title %></a></h2>
-            <p><%= article.description.substr(0, 200) %></p>
+            <p><%= (article.description + '').substr(0, 200) %></p>
             <p><%= article.author %></p>
             <p><%= formatDate(article.pubDate) %></p>
             <% article.category.forEach(function(category) { %>

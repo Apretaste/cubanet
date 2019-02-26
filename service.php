@@ -13,8 +13,41 @@ class Service
 	 **/
 	public function _main(Request $request, Response &$response)
 	{
+		$page = Utils::file_get_contents_curl("https://www.cubanet.org/feed");
+
+		//tuve que usar simplexml debido a que el feed provee los datos dentro de campos cdata
+		$content = simplexml_load_string($page, null, LIBXML_NOCDATA);
+
+		$articles = [];
+		foreach($content->channel->item as $item)
+		{
+			// get all parameters
+			$title = $item->title;
+			$link = $this->urlSplit($item->link);
+			$description = $item->description;
+			$pubDate = $item->pubDate;
+			$dc = $item->children("http://purl.org/dc/elements/1.1/");
+			$author = $dc->creator;
+			$category = [];
+			foreach($item->category as $currCategory)
+			{
+				$category[] = $currCategory;
+			}
+			$categoryLink = [];
+
+			$articles[] = [
+				"title" => $title,
+				"link" => $link,
+				"pubDate" => $pubDate,
+				"description" => "$description",
+				"category" => $category,
+				"categoryLink" => $categoryLink,
+				"author" => $author
+			];
+		}
+
 		$response->setLayout('cubanet.ejs');
-		$response->setTemplate("allStories.ejs", $this->allStories());
+		$response->setTemplate("allStories.ejs", ["articles" => $articles]);
 	}
 
 	/**
@@ -237,51 +270,6 @@ class Service
 		}
 
 		// Return response content
-		return ["articles" => $articles];
-	}
-
-	/**
-	 * Get all stories from a query
-	 *
-	 * @return array
-	 */
-	private function allStories()
-	{
-
-		$page = Utils::file_get_contents_curl("https://www.cubanet.org/feed");
-
-		//tuve que usar simplexml debido a que el feed provee los datos dentro de campos cdata
-		$content = simplexml_load_string($page, null, LIBXML_NOCDATA);
-
-		$articles = [];
-		foreach($content->channel->item as $item)
-		{
-			// get all parameters
-			$title = $item->title;
-			$link = $this->urlSplit($item->link);
-			$description = $item->description;
-			$pubDate = $item->pubDate;
-			$dc = $item->children("http://purl.org/dc/elements/1.1/");
-			$author = $dc->creator;
-			$category = [];
-			foreach($item->category as $currCategory)
-			{
-				$category[] = $currCategory;
-			}
-			$categoryLink = [];
-
-			$articles[] = [
-				"title" => $title,
-				"link" => $link,
-				"pubDate" => $pubDate,
-				"description" => $description,
-				"category" => $category,
-				"categoryLink" => $categoryLink,
-				"author" => $author
-			];
-		}
-
-		// return response content
 		return ["articles" => $articles];
 	}
 
