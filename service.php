@@ -46,7 +46,7 @@ class Service
 			];
 		}
 
-		print_r($articles);
+		//print_r($articles);
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("allStories.ejs", ["articles" => $articles]);
 	}
@@ -64,7 +64,6 @@ class Service
 		// no allow blank entries
 		if(empty($request->input->data->query))
 		{
-			$response = new Response();
 			$response->setLayout('cubanet.ejs');
 			$response->setTemplate("text.ejs", [
 				"title" => "Busqueda en blanco",
@@ -88,7 +87,6 @@ class Service
 		// error if the searche return empty
 		if(empty($articles))
 		{
-			$response = new Response();
 			$response->setLayout('cubanet.ejs');
 			$response->setTemplate("text.ejs", [
 				"title" => "Su busqueda no produjo resultados",
@@ -103,7 +101,6 @@ class Service
 			"search" => $request->input->data->query
 		];
 
-		$response = new Response();
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("searchArticles.ejs", $responseContent);
 
@@ -122,7 +119,6 @@ class Service
 		// no allow blank entries
 		if(empty($request->input->data->query))
 		{
-			$response = new Response();
 			$response->setLayout('cubanet.ejs');
 			$response->setTemplate("text.ejs", [
 				"title" => "Busqueda en blanco",
@@ -150,7 +146,6 @@ class Service
 			$images = [$responseContent['img']];
 		}
 
-		$response = new Response();
 		$response->setCache();
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("story.ejs", $responseContent, $images);
@@ -169,7 +164,6 @@ class Service
 	{
 		if(empty($request->input->data->query))
 		{
-			$response = new Response();
 			$response->setLayout('cubanet.ejs');
 			$response->setTemplate("text.ejs", [
 				"title" => "Categoria en blanco",
@@ -184,7 +178,6 @@ class Service
 			"category" => $request->input->data->query
 		];
 
-		$response = new Response();
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("catArticles.ejs", $responseContent);
 	}
@@ -365,7 +358,6 @@ class Service
 	{
 		error_log("WARNING: ERROR ON SERVICE CUBANET");
 
-		$response = new Response();
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("text.ejs", [
 			"title" => "Error en peticion",

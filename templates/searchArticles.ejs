@@ -4,11 +4,11 @@
 
         <% articles.forEach(function(article) { %>
             <small>
-                <% formatDate(article.pubDate) %>
+                <%= formatDate(article.pubDate) %>
             </small>
             <br/>
             <b><a href = "#!" onclick = "apretaste.send({command: 'CUBANET HISTORIA', data: {query: article.link}})"><%= article.title %></a></b>
-            <% article.description.substr(0, 200) %><br/>
+            <%= article.description.substr(0, 200) %><br/>
         <% }); %>
 
         <button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'CUBANET'})">
