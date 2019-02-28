@@ -1,0 +1,8 @@
+{
+	"name": "cubanet",
+	"version": "1",
+	"description": "Muestra los titulares del periodico independiente CubaNet y permite leer las noticias publicadas en dicho diario",
+	"category": "informativo",
+	"creator": "falcocom25@gmail.com",
+	"listed": true
+}

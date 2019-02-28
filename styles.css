@@ -1,0 +1,52 @@
+@media only screen and (max-width: 600px) {
+    #container {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .button {
+        display: block !important;
+    }
+
+    .button a {
+        display: block !important;
+        font-size: 18px !important;
+        width: 100% !important;
+        max-width: 600px !important;
+    }
+
+    .section {
+        width: 100%;
+        margin: 2px 0px;
+        display: block;
+    }
+
+    .phone-block {
+        display: block;
+    }
+}
+
+body {
+    font-family: Arial;
+}
+
+h1 {
+    color: #C50406;
+    text-transform: uppercase;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+h2 {
+    color: #C50406;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-top: 30px;
+    font-weight: normal;
+}
+
+.background {
+    background: white;
+    padding: 10px;
+}

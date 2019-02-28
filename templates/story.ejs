@@ -1,0 +1,35 @@
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <h1> <%= title %></h1>
+
+        <p> <%= intro %></p>
+    </div>
+</div>
+
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <% if (img) { %>
+            <img src="<%= img %>" alt="<%= imgAlt %>" width="100%">
+        <% } %>
+    </div>
+</div>
+
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <section> <p> <%= content.content %></p> </section>
+
+        <button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'CUBANET'})">
+            M&aacute;s noticias
+            <i class = "material-icons right">feed</i>
+        </button>
+    </div>
+</div>
+
+<div class = "row">
+    <div class = "col s12 m12 xl12">
+        <button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'PIZARRA', data: {query: 'Miren esto:  ' + url}})">
+            Compartir
+            <i class = "material-icons right">feed</i>
+        </button>
+    </div>
+</div>

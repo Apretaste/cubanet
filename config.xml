@@ -1,6 +1,0 @@
-<service>
-	<serviceName>cubanet</serviceName>
-	<serviceDescription>Muestra los titulares del periodico independiente CubaNet y permite leer las noticias publicadas en dicho diario</serviceDescription>
-	<creatorEmail>falcocom25@gmail.com</creatorEmail>
-	<serviceCategory>informativo</serviceCategory>
-</service>
