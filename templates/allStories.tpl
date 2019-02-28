@@ -13,7 +13,7 @@
 	<small>
 		<font color="gray">{$article['author']}, {$article['pubDate']|date_format}</font>
 		<br/>
-		Categor&iacute;as:
+		Categorías:
 		{foreach from=$article['category'] item=category name=cats}
 			{link href="CUBANET CATEGORIA {$category}" caption="{$category}"}
 			{if not $smarty.foreach.cats.last}{separator}{/if}

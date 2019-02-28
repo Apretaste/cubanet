@@ -1,7 +1,7 @@
 <h1>Categoria: {$category}</h1>
 
 {if $articles|count eq 0}
-	<p>Lo siento, a&uacute;n no tenemos historias para esta categor&iacute;a :'-(</p>
+	<p>Lo siento, aún no tenemos historias para esta categoría :'-(</p>
 {/if}
 
 {foreach from=$articles item=article}
@@ -17,5 +17,5 @@
 {space5}
 
 <center>
-	{button href="CUBANET" caption="M&aacute;s noticias"}
+	{button href="CUBANET" caption="Más noticias"}
 </center>

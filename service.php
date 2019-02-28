@@ -50,7 +50,7 @@
 				$response = new Response();
 				$response->setEmailLayout('cubanet.tpl');
 				$response->setResponseSubject("Su busqueda no genero resultados");
-				$response->createFromText("Su busqueda <b>{$request->query}</b> no gener&oacute; ning&uacute;n resultado. Por favor cambie los t&eacute;rminos de b&uacute;squeda e intente nuevamente.");
+				$response->createFromText("Su busqueda <b>{$request->query}</b> no generó ningún resultado. Por favor cambie los términos de búsqueda e intente nuevamente.");
 				return $response;
 			}
 
@@ -119,7 +119,7 @@
 				$response = new Response();
 				$response->setEmailLayout('cubanet.tpl');
 				$response->setResponseSubject("Categoria en blanco");
-				$response->createFromText("Su busqueda parece estar en blanco, debe decirnos sobre que categor&iacute;a desea leer");
+				$response->createFromText("Su busqueda parece estar en blanco, debe decirnos sobre que categoría desea leer");
 				return $response;
 			}
 
