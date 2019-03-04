@@ -1,12 +1,13 @@
 <div class="row">
     <div class="col s12 m12 xl12">
-        <% articles.forEach(function(article) { %>
-            <h2><a href="#!" onclick="apretaste.send({command:'CUBANET HISTORIA', data:{query: article.link}})"><%= article.title %></a></h2>
+        <% articles.forEach(function(article, i) { %>
+            <h2>
+                <a class = "link link-simple" data-command = "CUBANET HISTORIA" data-query="articles[<%= i %>].link"><%= article.title %></a></h2>
             <p><%= (article.description + '').substr(0, 200) %></p>
             <p><%= article.author %></p>
             <p><%= formatDate(article.pubDate) %></p>
-            <% article.category.forEach(function(cat) { %>
-                <a href="#!" onclick="apretaste.send({command:'CUBANET CATEGORIA', data:{query: cat}})"><%= cat %></a>
+            <% article.category.forEach(function(cat, j) { %>
+                <a class = "link link-simple" data-command = "CUBANET CATEGORIA" data-query="articles[<%= i %>].category[<%= j %>].link"><%= article.title %></a></h2>
             <% }); %>
         <% }); %>
     </div>

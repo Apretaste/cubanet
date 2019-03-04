@@ -6,8 +6,12 @@
 		<% if (articles.length == 0) { %>
 		<p>Lo siento, a&uacute;n no tenemos historias para esta categor&iacute;a :'-(</p>
 		<% } %>
-		<% articles.forEach(function(article) { %>
-		<b><a href = "#!" onclick = "apretaste.send({command:'CUBANET HISTORIA', data:{query: article.link}})"><%= article.title %></a></b>
+		<% articles.forEach(function(article, i) { %>
+		<b>
+			<a class="link link-simple" data-command = "CUBANET HISTORIA" data-query = "articles[<%= i %>].link">
+                <%= article.title %>
+			</a>
+		</b>
 		<% article.description.substr(0, 200) %>
 		<br/>
 		<small>

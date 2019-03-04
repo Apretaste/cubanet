@@ -2,12 +2,16 @@
 	<div class = "col s12 m12 xl12">
 		<h1>Buscar: <% search %></h1>
 
-		<% articles.forEach(function(article) { %>
+		<% articles.forEach(function(article, i) { %>
 			<small>
 				<%= formatDate(article.pubDate) %>
 			</small>
 			<br/>
-			<b><a href = "#!" onclick = "apretaste.send({command: 'CUBANET HISTORIA', data: {query: article.link}})"><%= article.title %></a></b>
+			<b>
+				<a class="link link-simple" data-command = "CUBANET HISTORIA" data-query = "articles[<%= i %>].link">
+                    <%= article.title %>
+				</a>
+			</b>
 			<%= article.description.substr(0, 200) %><br/>
 		<% }); %>
 
