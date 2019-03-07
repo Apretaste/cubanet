@@ -304,7 +304,7 @@ class Service
 			// get the image
 			if( ! empty($imgUrl))
 			{
-				$imgName = $this->utils->generateRandomHash() . "." . pathinfo($imgUrl, PATHINFO_EXTENSION);
+				$imgName = Utils::generateRandomHash() . "." . pathinfo($imgUrl, PATHINFO_EXTENSION);
 				$img = \Phalcon\DI\FactoryDefault::getDefault()->get('path')['root'] . "/temp/$imgName";
 				file_put_contents($img, file_get_contents($imgUrl));
 			}
