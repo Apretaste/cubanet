@@ -146,7 +146,7 @@ class Service
 			$images = [$responseContent['img']];
 		}
 
-		$response->setCache();
+		//$response->setCache();
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate("story.ejs", $responseContent, $images);
 
