@@ -1,38 +1,18 @@
-<!-- MENU -->
-<div class="container">
-    <div class="row">
-        <nav class="transparent z-depth-0">
-            <div class="nav-wrapper white">
-                <div class="left text-center">
-                    <div style="font-size:42px; margin:15px 0px; font-weight:bold; font-family:Times;">
-                        <span style="color:#E4001B;">CUBAN</span><span style="color:#1129FF;">E</span><span
-                                style="color:#E4001B;">T</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
+<!-- HEADER -->
+
+<div class="row">
+    <div class="col s12 flow-text relative">
+        <a href="#home" onclick="apretaste.send({'command':'CUBANET'})">
+            <img id="logo" class="responsive-img" src="{{APP_SERVICE_PATH}}/images/cubanet-logo.png">
+        </a>
+        <i><small class="grey-text" id="categoria-servicio">Informativo</small></i>
+        <div class="divider"></div>
     </div>
 </div>
 
-
-<div class="content container">
-
-    {{APP_TEMPLATE_CODE}}
-
-    <div class="row">
-        <div class="col s12 text-center">
-            <small>Tambien puedes visitar <a href="https://www.cubanet.org" target="_blank">cubanet.org</a></small>
-        </div>
-    </div>
-</div>
+{{APP_TEMPLATE_CODE}}
 
 <!-- FOOTER -->
-<div class="row center-align grey lighten-4" style="padding:20px 0px; margin-top:20px;">
-    Apretaste &copy; <%= (new Date).getFullYear() %>. All rights reserved
-    <br>
-    <a href="#!" onclick="apretaste.send({'command':'SOPORTE'});">Soporte</a>
-    &nbsp;&ndash;&nbsp;
-    <a href="#!" onclick="apretaste.send({'command':'TERMINOS'});">T&eacute;rminos</a>
+<!-- this footer just add some space to facilitate reading -->
+<div id="footer">
 </div>
-
-

@@ -1,34 +1,24 @@
-<div class = "row">
-    <div class = "col s12 m12 xl12">
-        <h1> <%= title %></h1>
-
-        <p> <%= intro %></p>
-    </div>
-</div>
-
-<div class = "row">
-    <div class = "col s12 m12 xl12">
-        <% if (img) { %>
-            <img src="<%= img %>" alt="<%= imgAlt %>" width="100%">
-        <% } %>
-    </div>
-</div>
-
-<div class = "row">
-    <div class = "col s12 m12 xl12">
-        <section> <p> <%= content.content %></p> </section>
-
-        <button class = "btn waves-effect waves-light" onclick = "apretaste.send({command:'CUBANET'})">
-            M&aacute;s noticias
-            <i class = "material-icons right">feed</i>
-        </button>
-    </div>
-</div>
-
-<div class = "row">
-    <div class = "col s12 m12 xl12">
-        <button class="btn waves-effect waves-light" onclick="apretaste.send({command: 'PIZARRA ESCRIBIR', data: {text: 'Miren esto: <%= url %>'}});">Compartir
-            <i class = "material-icons right">feed</i>
-        </button>
-    </div>
+<div class="row">
+	<div class="col s12" id="article">
+		<h1><%=title%></h1>
+		<%if(img!=""){%>
+			  <div class="center-align">	
+				  	<img class="responsive-img" src="{{APP_IMAGE_PATH}}/<%=img%>" alt="<%=imgAlt%>">
+				</div>
+		<%}%>
+		<small>
+		<blockquote>
+			<p><i><%=intro%></i></p>
+		</blockquote>
+		</small> 
+		<section>
+			<% content.forEach(parrafo=>{%>
+			<p style="text-align:left;"><%=parrafo%></p>
+		<%});%>
+		</section>
+		
+		<div class="fixed-action-btn">
+			<a class="btn-floating btn-large waves-effect waves-light green" href="#!" onclick="apretaste.send(<%=backButton%>)"><i class="material-icons">arrow_back</i></a>
+		</div>
+	</div>
 </div>

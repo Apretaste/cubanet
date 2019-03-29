@@ -1,33 +1,45 @@
 <div class="row">
-    <div class="col s12 m12 xl12">
-        <% articles.forEach(function(article, i) { %>
-            <h2>
-                <a class = "link link-simple" data-command = "CUBANET HISTORIA" data-query="articles[<%= i %>].link"><%= article.title %></a></h2>
-            <p><%= (article.description + '').substr(0, 200) %></p>
-            <p><%= article.author %></p>
-            <p><%= formatDate(article.pubDate) %></p>
-            <% article.category.forEach(function(cat, j) { %>
-                <a class = "link link-simple" data-command = "CUBANET CATEGORIA" data-query="articles[<%= i %>].category[<%= j %>].link"><%= article.title %></a></h2>
-            <% }); %>
-        <% }); %>
-    </div>
-</div>
+	<div class="col s12">
+		<ul class="collection">	
+		<% articles.forEach(article =>{%>
+			<li class="collection-item">
+				<%if (article.description.length>200) article.description=article.description.slice(0,200)+"..."%>
+					<a onclick="apretaste.send({'command':'CUBANET HISTORIA','data':{'historia':'<%=article.link%>'}})"><h6><b><%=article.title.toUpperCase()%></b></h6></a>
+					<%if(article.description.length!=0){%>
+						<p><%=article.description %></p>
+					<%}%>
+					<small>
+					<%=article.pubDate%>
+					<%if(article.author!=""){%>
+					&bull; <i><%=article.author%></i>
+					<%}%>
+					<br>
+					<%article.category.forEach(category =>{%>
+					<div class= "chip small">
+					<a class="grey-text text-darken-3" onclick="apretaste.send({'command':'CUBANET CATEGORIA','data':{'query':'<%=category%>', 'isCategory':true}})"><%=category%></a>
+					</div>
+					<%});%>
+					</small>
+			</li>
+		<%});%>
+		</ul>
+		</div>
+		<div class = "fixed-action-btn hide">
+			<a href = "#searchModal" class = "btn-floating btn-large waves-effect waves-light green modal-trigger">
+				<i class = "large material-icons">search</i>
+			</a>
+		</div>
 
-<div class = "fixed-action-btn">
-    <a href = "#searchModal" class = "btn-floating btn-large waves-effect waves-light green modal-trigger">
-        <i class = "large material-icons">search</i>
-    </a>
-</div>
-
-<div id = "searchModal" class = "modal bottom-sheet">
-    <div class = "modal-content">
-        <div class = "input-field">
-            <textarea id = "searchQuery" class = "materialize-textarea"></textarea>
-            <label for = "note">Buscar</label>
-        </div>
-    </div>
-    <div class = "modal-footer">
-        <a href = "#!" class = "modal-close waves-effect waves-light btn-flat">Cerrar</a>
-        <a onclick = "sendSearch()" class = "modal-close waves-effect waves-green btn-flat">Buscar</a>
-    </div>
+		<div id = "searchModal" class = "modal bottom-sheet">
+			<div class = "modal-content">
+				<div class = "input-field">
+					<textarea id = "searchQuery" class = "materialize-textarea"></textarea>
+					<label for = "note">Buscar</label>
+				</div>
+			</div>
+			<div class = "modal-footer">
+				<a href = "#!" class = "modal-close waves-effect waves-light btn-flat">Cerrar</a>
+				<a onclick = "sendSearch()" class = "modal-close waves-effect waves-green btn-flat">Buscar</a>
+			</div>
+	</div>
 </div>
