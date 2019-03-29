@@ -148,7 +148,7 @@ class Service {
     }
 
     if(isset($request->input->data->category)) 
-				$responseContent['backButton'] = "{'command':'CUBANET CATEGORIA', 'data':{'category':'{$request->input->data->category}'}}";
+				$responseContent['backButton'] = "{'command':'CUBANET CATEGORIA', 'data':{'query':'{$request->input->data->category}'}}";
 			else
 				$responseContent['backButton'] = "{'command':'CUBANET'}";
 
@@ -263,7 +263,7 @@ class Service {
           $crawler = $client->request('GET', $url);
           
 
-          if($crawler->filter('.grid_elements, .post-box')->count()==0){
+          if($crawler->filter('.grid_elements, .post-box')->count()==0 && $type != "categoria"){
             $type = "categoria";
             $i--;
             continue;
@@ -282,7 +282,9 @@ class Service {
               }
   
               $author = (new Crawler(file_get_contents($tmpFile)))->filter('.author-link > a, .author-name')->text();
+              
               $pubDate = (new Crawler(file_get_contents($tmpFile)))->filter('.date')->text();
+              
               $info = explode(",",$pubDate);
               $day = trim((explode("de",$info[1]))[0]);
               $month = trim((explode("de",$info[1]))[1]);
@@ -318,6 +320,7 @@ class Service {
                 "compDate" => $compDate,
                 "author" => $author
               ];
+              
             //}
           });
         }
