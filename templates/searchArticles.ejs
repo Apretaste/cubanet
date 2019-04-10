@@ -5,7 +5,7 @@
 			<% articles.forEach(article =>{%>
 				<li class="collection-item">
 					<%if (article.description.length>200) article.description=article.description.slice(0,200)+"..."%>
-						<a onclick="apretaste.send({'command':'CUBANET HISTORIA','data':{'historia':'<%=article.link%>', 'category':'<%=category%>'}})"><h6><b><%=article.title.toUpperCase()%></b></h6></a>
+						<a onclick="apretaste.send({'command':'CUBANET HISTORIA','data':{'historia':'<%=article.link%>', 'category':'<%=category%>', 'title':'<%=article.title%>'}})"><h6><b><%=article.title.toUpperCase()%></b></h6></a>
 						<%if(article.description.length!=0){%>
 							<p><%=article.description %></p>
 						<%}%>
