@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col s12">
+		<ul class="collection">	
+			<% articles.forEach(function(article){ %>
+				<li class="collection-item">
+					<a href="#!" onclick="apretaste.send({'command':'CUBANET HISTORIA','data':{'historia':'<%= article.link %>', 'title':'<%= article.title %>'}})">
+						<h6><%= article.title %></h6>
+					</a>
+
+					<% if(article.description.length > 0){ %>
+						<p><%= article.description %></p>
+					<%}%>
+
+					<small>
+						<%= article.pubDate %>
+
+						<% if(article.author!=""){ %>
+							&bull; <i><%=article.author%></i>
+						<% } %>
+
+						<br/>
+
+						<% article.category.forEach(function(category){ %>
+							<div class= "chip small">
+								<a class="grey-text text-darken-3" href="#!" onclick="apretaste.send({'command':'CUBANET CATEGORIA','data':{'query':'<%= category %>'}})"><%= category %></a>
+							</div>
+						<% }) %>
+					</small>
+				</li>
+			<% }) %>
+		</ul>
+	</div>
+</div>

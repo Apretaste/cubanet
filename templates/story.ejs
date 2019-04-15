@@ -1,24 +1,27 @@
 <div class="row">
 	<div class="col s12" id="article">
-		<h1><%=title%></h1>
-		<%if(img!=""){%>
-			  <div class="center-align">	
-				  	<img class="responsive-img" src="{{APP_IMAGE_PATH}}/<%=img%>" alt="<%=imgAlt%>">
-				</div>
-		<%}%>
+		<h1><%= title %></h1>
+
+		<% if(img != ""){ %>
+			<div class="center-align">	
+				<img class="responsive-img" src="{{APP_IMAGE_PATH}}/<%=img%>" alt="<%=imgAlt%>">
+			</div>
+		<% } %>
+
 		<small>
-		<blockquote>
-			<p><i><%=intro%></i></p>
-		</blockquote>
-		</small> 
+			<blockquote>
+				<p><i><%= intro %></i></p>
+			</blockquote>
+		</small>
+
 		<section>
-			<% content.forEach(parrafo=>{%>
-			<p style="text-align:left;"><%=parrafo%></p>
-		<%});%>
+			<% content.forEach(function(parrafo){ %>
+				<p style="text-align:left;"><%= parrafo %></p>
+			<% }) %>
 		</section>
 		
 		<div class="fixed-action-btn">
-			<a class="btn-floating btn-large waves-effect waves-light green" href="#!" onclick="apretaste.send(<%=backButton%>)"><i class="material-icons">arrow_back</i></a>
+			<a class="btn-floating btn-large waves-effect waves-light green" href="#!" onclick="apretaste.send({'command':'CUBANET'})"><i class="material-icons">arrow_back</i></a>
 		</div>
 	</div>
 </div>
