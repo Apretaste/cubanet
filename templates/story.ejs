@@ -1,10 +1,9 @@
 <div class="row">
 	<div class="col s12" id="article">
 		<h1><%= title %></h1>
-
 		<% if(img != ""){ %>
 			<div class="center-align">	
-				<img class="responsive-img" src="{{APP_IMAGE_PATH}}/<%=img%>" alt="<%=imgAlt%>">
+				<img class="responsive-img" src="{{APP_IMAGE_PATH}}<%= img %>" alt="<%=imgAlt%>">
 			</div>
 		<% } %>
 
