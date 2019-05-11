@@ -1,33 +1,33 @@
 <div class="row">
 	<div class="col s12">
-		<ul class="collection">	
-			<% articles.forEach(function(article){ %>
+		<ul class="collection">
+			<% for(var i=0; i<articles.length; i++) { %>
 				<li class="collection-item">
-					<a href="#!" onclick="apretaste.send({'command':'CUBANET HISTORIA','data':{'historia':'<%= article.link %>', 'title':'<%= article.title %>'}})">
-						<h6><%= article.title %></h6>
+					<a href="#!" onclick="apretaste.send({'command':'CUBANET HISTORIA','data':{'historia':'<%= articles[i].link %>', 'title':'<%= articles[i].title %>'}})">
+						<h6><%= articles[i].title %></h6>
 					</a>
 
-					<% if(article.description.length > 0){ %>
-						<p><%= article.description %></p>
-					<%}%>
+					<% if(articles[i].description.length > 0) { %>
+						<p><%= articles[i].description %></p>
+					<% } %>
 
 					<small>
-						<%= article.pubDate %>
+						<%= articles[i].pubDate %>
 
-						<% if(article.author!=""){ %>
-							&bull; <i><%=article.author%></i>
+						<% if(articles[i].author!="") { %>
+							&bull; <i><%=articles[i].author%></i>
 						<% } %>
 
 						<br/>
 
-						<% article.category.forEach(function(category){ %>
+						<% for(var j=0; j<articles[i].category.length; j++) { %>
 							<div class= "chip small">
-								<a class="grey-text text-darken-3" href="#!" onclick="apretaste.send({'command':'CUBANET CATEGORIA','data':{'query':'<%= category %>'}})"><%= category %></a>
+								<a class="grey-text text-darken-3" href="#!" onclick="apretaste.send({'command':'CUBANET CATEGORIA','data':{'query':'<%= articles[i].category[j] %>'}})"><%= articles[i].category[j] %></a>
 							</div>
-						<% }) %>
+						<% } %>
 					</small>
 				</li>
-			<% }) %>
+			<% } %>
 		</ul>
 	</div>
 </div>
