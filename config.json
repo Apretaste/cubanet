@@ -1,6 +1,6 @@
 {
 	"name": "cubanet",
-	"version": "5",
+	"version": "6",
 	"description": "Muestra los titulares del periódico independiente CubaNet y permite leer las noticias publicadas en dicho diario",
 	"category": "informativo",
 	"creator": "salvi@apretaste.org",
