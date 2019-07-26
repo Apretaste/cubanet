@@ -21,7 +21,7 @@ class CubanetService extends ApretasteService
 		// load from Cubanet
 		if(!is_array($articles)){
 			// get feed XML code from Cubanet
-			$page = trim(Utils::file_get_contents_curl("https://www.cubanet.org/feed"));
+			$page = trim(Utils::file_get_contents_curl("https://www.cubanet.org/?feed=rss2"));
 
 			if (empty($page))
             {
