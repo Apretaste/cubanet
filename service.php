@@ -3,7 +3,7 @@
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
-class Service
+class CubanetService extends ApretasteService
 {
 	/**
 	 * Load the list of news
@@ -23,8 +23,16 @@ class Service
 			// get feed XML code from Cubanet
 			$page = Utils::file_get_contents_curl("https://www.cubanet.org/feed");
 
+			if (empty($page))
+            {
+                $this->simpleMessage(
+                    'Servicio no disponible',
+                    'El servicio Cubanet no se encuentra disponible en estos momentos. Intente luego y si el problema persiste contacte al soporte. Disculpe las molestias.');
+                return;
+            }
+
 			//tuve que usar simplexml debido a que el feed provee los datos dentro de campos cdata
-			$content = simplexml_load_string($page, null, LIBXML_NOCDATA);
+			$content = @simplexml_load_string($page, null, LIBXML_NOCDATA);
 
 			$articles = [];
 			foreach ($content->channel->item as $item) {
