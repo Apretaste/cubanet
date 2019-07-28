@@ -31,16 +31,15 @@ class CubanetService extends ApretasteService
             $rss = Feed::loadRss($url);
 
             $articles = [];
-            if (is_array($rss->item)){
-                foreach ($rss->item as $item)
-                {
-                    $articles[] = [
-                        'title'       => $item->title,
-                        'link'        => $item->link,
-                        'pubDate'     => $item->timestamp,
-                        'description' => $item->description
-                    ];
-                }
+
+            foreach ($rss->item as $item)
+            {
+                $articles[] = [
+                    'title'       => $item->title,
+                    'link'        => $item->link,
+                    'pubDate'     => $item->timestamp,
+                    'description' => $item->description
+                ];
             }
 
             //$page = trim(Utils::file_get_contents_curl($url));
