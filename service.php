@@ -35,10 +35,10 @@ class CubanetService extends ApretasteService
             foreach ($rss->item as $item)
             {
                 $articles[] = [
-                    'title'       => $item->title,
-                    'link'        => $item->link,
-                    'pubDate'     => $item->timestamp,
-                    'description' => $item->description
+                    'title'       => (string) $item->title,
+                    'link'        => (string) $item->link,
+                    'pubDate'     => (string) $item->timestamp,
+                    'description' => (string) $item->description
                 ];
             }
 
