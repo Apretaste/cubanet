@@ -39,7 +39,9 @@ class CubanetService extends ApretasteService
                     'title'       => strip_tags((string)$item->title),
                     'link'        => (string)$item->link,
                     'pubDate'     => date('m/d/Y H:i:s', (int) $item->timestamp),
-                    'description' => strip_tags((string)$item->description),
+                    'description' => str_replace([
+                        '(Feed generated with FetchRSS)'
+                    ],'',strip_tags((string)$item->description)),
                     'category'    => ['Noticias'],
                     'author'      => 'Cubanet.org',
 
