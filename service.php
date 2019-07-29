@@ -40,7 +40,7 @@ class CubanetService extends ApretasteService
                     'link'        => (string)$item->link,
                     'pubDate'     => date('m/d/Y H:i:s', (int) $item->timestamp),
                     'description' => strip_tags((string)$item->description),
-                    'category'    => 'Noticias',
+                    'category'    => ['Noticias'],
                     'author'      => 'Cubanet.org',
 
                 ];
