@@ -8,20 +8,23 @@
 			</div>
 		<% } %>
 
-		<small>
-			<blockquote>
-				<p><i><%= intro %></i></p>
-			</blockquote>
-		</small>
+		<blockquote>
+			<p><<small><i><%= intro %></i></small></p>
+		</blockquote>
 
 		<section>
 			<% for(var i=0; i<content.length; i++) { %>
 				<p style="text-align:left;"><%= content[i] %></p>
 			<% } %>
 		</section>
-		<br><br><br>
+
+		<br/><br/><br/>
+
 		<div class="fixed-action-btn hide-on-share">
-			<a class="btn-floating btn-large waves-effect waves-light" href="#!" onclick="apretaste.send({'command':'CUBANET'})"><i class="material-icons">arrow_back</i></a>
+			<a class="btn-floating btn-large waves-effect waves-light" href="#!"
+					onclick="apretaste.send({'command':'CUBANET'})">
+				<i class="material-icons">arrow_back</i>
+			</a>
 		</div>
 	</div>
 </div>
