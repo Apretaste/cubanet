@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
-
 use Goutte\Client;
 
 class CubanetService extends ApretasteService
