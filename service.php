@@ -1,8 +1,11 @@
 <?php
 
 use Goutte\Client;
+use Apretaste\Request;
+use Apretaste\Response;
+use Apretaste\Challenges;
 
-class CubanetService extends ApretasteService
+class Service
 {
 
 	/**
@@ -12,12 +15,13 @@ class CubanetService extends ApretasteService
 	 * @param Response $response
 	 *
 	 * @throws \FeedException
+	 * @throws \Framework\Alert
 	 */
 	public function _main(Request $request, Response &$response)
 	{
 		// load from cache
 		$articles = false;
-		$cacheFile = Utils::getTempDir().date('YmdH').'_cubanet_news.tmp';
+		$cacheFile = TEMP_PATH . date('YmdH').'_cubanet_news.tmp';
 		if (file_exists($cacheFile)) {
 			$articles = unserialize(file_get_contents($cacheFile));
 		}
@@ -46,8 +50,6 @@ class CubanetService extends ApretasteService
 				];
 			}
 
-			//$page = trim(Utils::file_get_contents_curl($url));
-
 			if (empty($articles)) {
 				$this->simpleMessage(
 					'Servicio no disponible',
@@ -57,48 +59,6 @@ class CubanetService extends ApretasteService
 				return;
 			}
 
-			//tuve que usar simplexml debido a que el feed provee los datos dentro de campos cdata
-			/* libxml_use_internal_errors(true);
-			 $content = @simplexml_load_string($page, null, LIBXML_NOCDATA);
-			 if (!$content) {
-				 $errors = libxml_get_errors();
-				 libxml_clear_errors();
-				 $this->simpleMessage(
-					 'Servicio no disponible',
-					 'El servicio Cubanet no se encuentra disponible en estos momentos. Intente luego y si el problema persiste contacte al soporte. Disculpe las molestias.');
-				 return;
-			 }
-
-			 $articles = [];
-			 foreach ($content->channel->item as $item) {
-				 // get title, link and description
-				 $title = str_replace("'", '', $item->title);
-				 $link = str_replace('https://www.cubanet.org/', '', $item->link);
-				 $description = $item->description;
-				 $description = trim(strip_tags($description));
-				 $description = html_entity_decode($description);
-				 $description = php::truncate($description, 160);
-
-				 // get formatted date
-				 $pubDate = $item->pubDate;
-				 $fecha = strftime('%B %d, %Y.',strtotime($pubDate));
-				 $hora = date_format((new DateTime($pubDate)),'h:i a');
-				 $pubDate = $fecha.' '.$hora;
-
-				 // get author
-				 $dc = $item->children('http://purl.org/dc/elements/1.1/');
-				 $author = strval($dc->creator);
-
-				 // get list of categories
-				 $category = [];
-				 foreach ($item->category as $currCategory) {
-					 $category[] = strval($currCategory);
-				 }
-
-				 // add article to the list
-
-			 }
- */
 			// save cache in the temp folder
 			setlocale(LC_ALL, 'es_ES.UTF-8');
 			file_put_contents($cacheFile, serialize($articles));
@@ -116,20 +76,21 @@ class CubanetService extends ApretasteService
 	 * @param Request  $request
 	 * @param Response $response
 	 *
-	 * @return \Response
+	 * @throws \Framework\Alert
 	 */
 	public function _historia(Request $request, Response &$response)
 	{
 		// do no allow empty entries
 		if (empty($request->input->data->historia)) {
-			return $this->error($response, 'Búsqueda en blanco', 'Su búsqueda parece estar en blanco, debe decirnos que artículo quiere leer');
+			$this->error($response, 'Búsqueda en blanco', 'Su búsqueda parece estar en blanco, debe decirnos que artículo quiere leer');
+			return;
 		}
 
 		// load from cache
 		$notice = false;
 		$query = $request->input->data->historia;
 		$cleanQuery = preg_replace('/[^A-Za-z0-9]/', '', $query);
-		$cacheFile = Utils::getTempDir().md5($cleanQuery).'_cubanet_story.tmp';
+		$cacheFile = TEMP_PATH . md5($cleanQuery).'_cubanet_story.tmp';
 		if (file_exists($cacheFile)) {
 			$notice = @unserialize(file_get_contents($cacheFile));
 		}
@@ -161,7 +122,7 @@ class CubanetService extends ApretasteService
 				// get the image
 				if (!empty($imgUrl)) {
 					$imgName = Utils::generateRandomHash().'.'.pathinfo($imgUrl, PATHINFO_EXTENSION);
-					$img = Utils::getTempDir()."/$imgName";
+					$img = TEMP_PATH."/$imgName";
 					file_put_contents($img, file_get_contents($imgUrl));
 				}
 			}
@@ -206,19 +167,22 @@ class CubanetService extends ApretasteService
 	 *
 	 * @param Request  $request
 	 * @param Response $response
+	 *
+	 * @throws \Framework\Alert
 	 */
 	public function _categoria(Request $request, Response &$response)
 	{
 		// do no allow empty entries
 		if (empty($request->input->data->query)) {
-			return $this->error($response, 'Categoría en blanco', 'Su búsqueda parece estar en blanco, debe decirnos sobre que categoría desea leer');
+			$this->error($response, 'Categoría en blanco', 'Su búsqueda parece estar en blanco, debe decirnos sobre que categoría desea leer');
+			return;
 		}
 
 		// load from cache
 		$articles = false;
 		$query = $request->input->data->query;
 		$cleanQuery = $this->clean($query);
-		$fullPath = Utils::getTempDir().date('Ymd').md5($cleanQuery).'_cubanet_category.tmp';
+		$fullPath = TEMP_PATH.date('Ymd').md5($cleanQuery).'_cubanet_category.tmp';
 		if (file_exists($fullPath)) {
 			$articles = @unserialize(file_get_contents($fullPath));
 		}
@@ -255,7 +219,8 @@ class CubanetService extends ApretasteService
 
 		// error if no articles were found for the tag
 		if (empty($articles)) {
-			return $this->error($response, 'No hay resultados', 'Es extraño, pero no hemos encontrado resultados para esta categoría. Estamos revisando a ver que ocurre.');
+			$this->error($response, 'No hay resultados', 'Es extraño, pero no hemos encontrado resultados para esta categoría. Estamos revisando a ver que ocurre.');
+			return;
 		}
 
 		// send data to the template
@@ -271,10 +236,10 @@ class CubanetService extends ApretasteService
 	 * @param String   $title
 	 * @param String   $desc
 	 *
-	 * @return Response
+	 * @throws \Framework\Alert
 	 * @author salvipascual
 	 */
-	private function error(Response $response, $title, $desc)
+	private function error(Response &$response, $title, $desc)
 	{
 		// display show error in the log
 		error_log("[CUBANET] $title | $desc");
@@ -282,7 +247,7 @@ class CubanetService extends ApretasteService
 		// return error template
 		$response->setLayout('cubanet.ejs');
 
-		return $response->setTemplate('message.ejs', ['header' => $title, 'text' => $desc]);
+		$response->setTemplate('message.ejs', ['header' => $title, 'text' => $desc]);
 	}
 
 	/**
