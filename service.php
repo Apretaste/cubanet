@@ -112,6 +112,7 @@ class Service
 			$imgUrl = '';
 			$imgAlt = '';
 			$img = '';
+			$imgName = '';
 			if ($imageObj->count() != 0) {
 				$imgUrl = trim($imageObj->attr('src'));
 				$imgAlt = trim($imageObj->attr('alt'));
@@ -119,7 +120,7 @@ class Service
 				// get the image
 				if (!empty($imgUrl)) {
 					$imgName = Utils::randomHash().'.'.pathinfo($imgUrl, PATHINFO_EXTENSION);
-					$img = TEMP_PATH."/$imgName";
+					$img = IMG_PATH . "/cubanet/$imgName";
 					file_put_contents($img, Crawler::get($imgUrl));
 				}
 			}
@@ -135,7 +136,7 @@ class Service
 			$notice = [
 				'title' => $title,
 				'intro' => $intro,
-				'img' => $img,
+				'img' => $imgName,
 				'imgAlt' => $imgAlt,
 				'content' => $content
 			];
