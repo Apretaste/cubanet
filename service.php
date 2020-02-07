@@ -92,7 +92,7 @@ class Service
 		$query = $request->input->data->historia;
 		$cleanQuery = preg_replace('/[^A-Za-z0-9]/', '', $query);
 		$cacheFile = TEMP_PATH . md5($cleanQuery).'_cubanet_story.tmp';
-		if (file_exists($cacheFile)) {
+		if (file_exists($cacheFile) && false) {
 			$notice = @unserialize(file_get_contents($cacheFile));
 		}
 
