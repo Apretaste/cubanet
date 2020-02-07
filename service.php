@@ -222,7 +222,7 @@ class Service
 		}
 
 		// send data to the template
-		$response->setCache(240);
+		//$response->setCache(240);
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate('tags.ejs', ['articles' => $articles, 'category' => $query], [__DIR__.'/images/cubanet-logo.png']);
 	}
