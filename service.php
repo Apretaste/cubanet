@@ -105,7 +105,7 @@ class Service
 
 			// get the intro
 			$titleObj = Crawler::filter('header div>p');
-			$intro = $titleObj->count() > 0 ? php::truncate($titleObj->text(), 160) : '';
+			$intro = $titleObj->count() > 0 ? self::truncate($titleObj->text(), 160) : '';
 
 			// get the images
 			$imageObj = Crawler::filter('figure img.size-full');
@@ -199,7 +199,7 @@ class Service
 				$description = $item->filter('.content_wrapper, .entry-content, p')->text();
 				$description = trim(strip_tags($description));
 				$description = html_entity_decode($description);
-				$description = php::truncate($description, 160);
+				$description = self::truncate($description, 160);
 				$description = preg_replace('/\s+/', ' ', $description);
 
 				// add tag entry to the list
@@ -266,5 +266,32 @@ class Service
 		$query = str_replace(' ', '-', $query);
 
 		return utf8_encode($query);
+	}
+
+	/**
+	 * Cut a string without breaking words
+	 *
+	 * @author salvipascual
+	 * @param String $text
+	 * @param Integer $count
+	 * @return String
+	 */
+	public static function truncate($text, $count)
+	{
+		// do not cut shorter strings
+		if (strlen($text) <= $count) {
+			return $text;
+		}
+
+		// cut the string
+		$cut_text = substr($text, 0, $count);
+
+		// cut orphan words
+		if ($text{$count - 1} != ' ') { // if not a space
+			$new_pos 	= strrpos($cut_text, ' '); // find the space from the last character
+			$cut_text 	= substr($text, 0, $new_pos);
+		}
+
+		return $cut_text . '...';
 	}
 }
