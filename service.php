@@ -147,9 +147,7 @@ class Service
 		}
 
 		// get the image if exist
-		$images = empty($notice['img']) ? [] : [$notice['img']];
-		$notice['img'] = basename($notice['img']);
-
+		$images = empty($img) ? [] : [$img];
 		$images[] = __DIR__.'/images/cubanet-logo.png';
 
 		// send data to the template
