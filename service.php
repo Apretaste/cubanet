@@ -11,7 +11,7 @@ class Service
 	/**
 	 * Load the list of news
 	 *
-	 * @param Request  $request
+	 * @param Request $request
 	 * @param Response $response
 	 *
 	 * @throws \FeedException
@@ -38,14 +38,14 @@ class Service
 
 			foreach ($rss->item as $item) {
 				$articles[] = [
-					'title'       => strip_tags((string)$item->title),
-					'link'        => (string)$item->link,
-					'pubDate'     => date('m/d/Y H:i:s', (int) $item->timestamp),
+					'title' => strip_tags((string) $item->title),
+					'link' => (string) $item->link,
+					'pubDate' => date('m/d/Y H:i:s', (int) $item->timestamp),
 					'description' => str_replace([
 						'(Feed generated with FetchRSS)'
-					], '', strip_tags((string)$item->description)),
-					'category'    => ['Noticias'],
-					'author'      => 'Cubanet.org',
+					], '', strip_tags((string) $item->description)),
+					'category' => ['Noticias'],
+					'author' => 'Cubanet.org',
 
 				];
 			}
@@ -73,7 +73,7 @@ class Service
 	/**
 	 * Load one specific news
 	 *
-	 * @param Request  $request
+	 * @param Request $request
 	 * @param Response $response
 	 *
 	 * @throws \Framework\Alert
@@ -136,10 +136,10 @@ class Service
 
 			// create a json object to send to the template
 			$notice = [
-				'title'   => $title,
-				'intro'   => $intro,
-				'img'     => $img,
-				'imgAlt'  => $imgAlt,
+				'title' => $title,
+				'intro' => $intro,
+				'img' => $img,
+				'imgAlt' => $imgAlt,
 				'content' => $content
 			];
 
@@ -165,7 +165,7 @@ class Service
 	/**
 	 * Display news by category
 	 *
-	 * @param Request  $request
+	 * @param Request $request
 	 * @param Response $response
 	 *
 	 * @throws \Framework\Alert
@@ -206,8 +206,8 @@ class Service
 
 				// add tag entry to the list
 				$articles[] = [
-					'title'       => $title,
-					'link'        => $link,
+					'title' => $title,
+					'link' => $link,
 					'description' => $description
 				];
 			});
@@ -233,8 +233,8 @@ class Service
 	 * Return an error message
 	 *
 	 * @param Response $response
-	 * @param String   $title
-	 * @param String   $desc
+	 * @param String $title
+	 * @param String $desc
 	 *
 	 * @throws \Framework\Alert
 	 * @author salvipascual
