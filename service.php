@@ -1,13 +1,13 @@
 <?php
 
-use Goutte\Client;
+use Framework\Crawler;
 use Apretaste\Request;
 use Apretaste\Response;
 use Apretaste\Challenges;
+use Framework\Utils;
 
 class Service
 {
-
 	/**
 	 * Load the list of news
 	 *
@@ -30,7 +30,7 @@ class Service
 		if (!is_array($articles)) {
 			// get feed XML code from Cubanet
 			//$page = trim(Utils::file_get_contents_curl("https://www.cubanet.org/?feed=rss2"));
-			$url = 'http://fetchrss.com/rss/5d3df3968a93f8f3768b45675d3df1ff8a93f81a658b4567.xml';
+			$url = 'http://fetchrss.com/rss/5d7945108a93f8666f8b45675e4f5cb88a93f86d3d8b4567.xml';
 			/** @var Feed $rss */
 			$rss = Feed::loadRss($url);
 
@@ -91,44 +91,41 @@ class Service
 		$query = $request->input->data->historia;
 		$cleanQuery = preg_replace('/[^A-Za-z0-9]/', '', $query);
 		$cacheFile = TEMP_PATH . md5($cleanQuery).'_cubanet_story.tmp';
-		if (file_exists($cacheFile)) {
+		if (file_exists($cacheFile) && false) {
 			$notice = @unserialize(file_get_contents($cacheFile));
 		}
 
 		// load from Cubanet
 		if (!is_array($notice)) {
-			// create a new client
-			$client = new Client();
-			$guzzle = $client->getClient();
-			$client->setClient($guzzle);
-			$crawler = $client->request('GET', "https://www.cubanet.org/$query");
+			Crawler::start("https://www.cubanet.org/$query");
 
 			// search for title
-			$title = $crawler->filter('header h1.entry-title')->text();
+			$title = Crawler::filter('header h1.entry-title')->text();
 
 			// get the intro
-			$titleObj = $crawler->filter('header div>p');
-			$intro = $titleObj->count() > 0 ? php::truncate($titleObj->text(), 160) : '';
+			$titleObj = Crawler::filter('header div>p');
+			$intro = $titleObj->count() > 0 ? self::truncate($titleObj->text(), 160) : '';
 
 			// get the images
-			$imageObj = $crawler->filter('figure img.size-full');
+			$imageObj = Crawler::filter('figure img.size-full');
 			$imgUrl = '';
 			$imgAlt = '';
 			$img = '';
+			$imgName = '';
 			if ($imageObj->count() != 0) {
 				$imgUrl = trim($imageObj->attr('src'));
 				$imgAlt = trim($imageObj->attr('alt'));
 
 				// get the image
 				if (!empty($imgUrl)) {
-					$imgName = Utils::generateRandomHash().'.'.pathinfo($imgUrl, PATHINFO_EXTENSION);
-					$img = TEMP_PATH."/$imgName";
-					file_put_contents($img, file_get_contents($imgUrl));
+					$imgName = Utils::randomHash() . '.' . pathinfo($imgUrl, PATHINFO_EXTENSION);
+					$img = SHARED_PUBLIC_PATH . "content/cubanet/$imgName";
+					file_put_contents($img, Crawler::get($imgUrl));
 				}
 			}
 
 			// get the array of paragraphs of the body
-			$paragraphs = $crawler->filter('div.entry-content p');
+			$paragraphs = Crawler::filter('div.entry-content p');
 			$content = [];
 			foreach ($paragraphs as $p) {
 				$content[] = trim($p->textContent);
@@ -138,7 +135,7 @@ class Service
 			$notice = [
 				'title' => $title,
 				'intro' => $intro,
-				'img' => $img,
+				'img' => $imgName,
 				'imgAlt' => $imgAlt,
 				'content' => $content
 			];
@@ -149,9 +146,7 @@ class Service
 		}
 
 		// get the image if exist
-		$images = empty($notice['img']) ? [] : [$notice['img']];
-		$notice['img'] = basename($notice['img']);
-
+		$images = empty($img) ? [] : [$img];
 		$images[] = __DIR__.'/images/cubanet-logo.png';
 
 		// send data to the template
@@ -159,7 +154,7 @@ class Service
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate('story.ejs', $notice, $images);
 
-		Challenges::complete("read-cubanet", $request->person->id);
+		Challenges::complete('read-cubanet', $request->person->id);
 	}
 
 	/**
@@ -190,18 +185,18 @@ class Service
 		// load from Cubanet
 		if (!is_array($articles)) {
 			// Setup crawler
-			$client = new Client();
-			$crawler = $client->request('GET', 'https://www.cubanet.org/tag/'.urlencode($cleanQuery));
+			Crawler::start('https://www.cubanet.org/tag/'.urlencode($cleanQuery));
+
 
 			$articles = [];
-			$crawler->filter('.grid_elements, .post-box')->each(function ($item) use (&$articles) {
+			Crawler::filter('.grid_elements, .post-box')->each(function ($item) use (&$articles) {
 				// get title, link and description
 				$link = $item->filter('h2 > a')->attr('href');
 				$title = str_replace('Vínculo Permanente a ', '', $item->filter('h2 > a')->attr('title'));
 				$description = $item->filter('.content_wrapper, .entry-content, p')->text();
 				$description = trim(strip_tags($description));
 				$description = html_entity_decode($description);
-				$description = php::truncate($description, 160);
+				$description = self::truncate($description, 160);
 				$description = preg_replace('/\s+/', ' ', $description);
 
 				// add tag entry to the list
@@ -224,7 +219,7 @@ class Service
 		}
 
 		// send data to the template
-		$response->setCache(240);
+		//$response->setCache(240);
 		$response->setLayout('cubanet.ejs');
 		$response->setTemplate('tags.ejs', ['articles' => $articles, 'category' => $query], [__DIR__.'/images/cubanet-logo.png']);
 	}
@@ -268,5 +263,32 @@ class Service
 		$query = str_replace(' ', '-', $query);
 
 		return utf8_encode($query);
+	}
+
+	/**
+	 * Cut a string without breaking words
+	 *
+	 * @author salvipascual
+	 * @param String $text
+	 * @param Integer $count
+	 * @return String
+	 */
+	public static function truncate($text, $count)
+	{
+		// do not cut shorter strings
+		if (strlen($text) <= $count) {
+			return $text;
+		}
+
+		// cut the string
+		$cut_text = substr($text, 0, $count);
+
+		// cut orphan words
+		if ($text{$count - 1} != ' ') { // if not a space
+			$new_pos 	= strrpos($cut_text, ' '); // find the space from the last character
+			$cut_text 	= substr($text, 0, $new_pos);
+		}
+
+		return $cut_text . '...';
 	}
 }
