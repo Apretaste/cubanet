@@ -19,18 +19,13 @@ class Service
 	 */
 	public function _main(Request $request, Response &$response)
 	{
-		// load from cache
-		$articles = false;
-		$cacheFile = TEMP_PATH . date('YmdH').'_cubanet_news.tmp';
-		if (file_exists($cacheFile)) {
-			$articles = unserialize(file_get_contents($cacheFile));
-		}
+		$articles = self::loadCache('news');
 
 		// load from Cubanet
 		if (!is_array($articles)) {
 			// get feed XML code from Cubanet
-			//$page = trim(Utils::file_get_contents_curl("https://www.cubanet.org/?feed=rss2"));
 			$url = 'http://fetchrss.com/rss/5d7945108a93f8666f8b45675e4f5cb88a93f86d3d8b4567.xml';
+
 			/** @var Feed $rss */
 			$rss = Feed::loadRss($url);
 
@@ -61,7 +56,7 @@ class Service
 
 			// save cache in the temp folder
 			setlocale(LC_ALL, 'es_ES.UTF-8');
-			file_put_contents($cacheFile, serialize($articles));
+			self::saveCache('news', $articles);
 		}
 
 		// send data to the template
@@ -89,11 +84,8 @@ class Service
 		// load from cache
 		$notice = false;
 		$query = $request->input->data->historia;
-		$cleanQuery = preg_replace('/[^A-Za-z0-9]/', '', $query);
-		$cacheFile = TEMP_PATH . md5($cleanQuery).'_cubanet_story.tmp';
-		if (file_exists($cacheFile) && false) {
-			$notice = @unserialize(file_get_contents($cacheFile));
-		}
+		$cacheName = 'story_'.md5(preg_replace('/[^A-Za-z0-9]/', '', $query));
+		$notice = self::loadCache($cacheName);
 
 		// load from Cubanet
 		if (!is_array($notice)) {
@@ -142,7 +134,7 @@ class Service
 
 			// save cache in the temp folder
 			setlocale(LC_ALL, 'es_ES.UTF-8');
-			file_put_contents($cacheFile, serialize($notice));
+			self::saveCache($cacheName, $notice);
 		}
 
 		// get the image if exist
@@ -176,11 +168,9 @@ class Service
 		// load from cache
 		$articles = false;
 		$query = $request->input->data->query;
-		$cleanQuery = $this->clean($query);
-		$fullPath = TEMP_PATH.date('Ymd').md5($cleanQuery).'_cubanet_category.tmp';
-		if (file_exists($fullPath)) {
-			$articles = @unserialize(file_get_contents($fullPath));
-		}
+		$cleanQuery = md5($this->clean($query));
+		$cacheName = 'category_'.$cleanQuery;
+		$articles = self::loadCache($cacheName);
 
 		// load from Cubanet
 		if (!is_array($articles)) {
@@ -209,7 +199,7 @@ class Service
 
 			// save cache in the temp folder
 			setlocale(LC_ALL, 'es_ES.UTF-8');
-			file_put_contents($fullPath, serialize($articles));
+			self::saveCache($cacheName, $articles);
 		}
 
 		// error if no articles were found for the tag
@@ -284,11 +274,42 @@ class Service
 		$cut_text = substr($text, 0, $count);
 
 		// cut orphan words
-		if ($text{$count - 1} != ' ') { // if not a space
-			$new_pos 	= strrpos($cut_text, ' '); // find the space from the last character
-			$cut_text 	= substr($text, 0, $new_pos);
+		if ($text[$count - 1] !== ' ') { // if not a space
+			$new_pos = strrpos($cut_text, ' '); // find the space from the last character
+			$cut_text = substr($text, 0, $new_pos);
 		}
 
 		return $cut_text . '...';
+	}
+
+	/**
+	 * Load cache
+	 *
+	 * @param $name
+	 * @param null $cacheFile
+	 *
+	 * @return bool|mixed
+	 */
+	public static function loadCache($name, &$cacheFile = null)
+	{
+		$data = false;
+		$cacheFile = TEMP_PATH . 'cache/cubanet_'.$name.'_'.date('Ymd').'.tmp';
+		if (file_exists($cacheFile)) {
+			$data = unserialize(file_get_contents($cacheFile));
+		}
+		return $data;
+	}
+
+	/**
+	 * Save cache
+	 *
+	 * @param $name
+	 * @param $data
+	 * @param null $cacheFile
+	 */
+	public static function saveCache($name, $data, &$cacheFile = null)
+	{
+		$cacheFile = TEMP_PATH . 'cache/cubanet_'.$name.'_'.date('Ymd').'.tmp';
+		file_put_contents($cacheFile, serialize($data));
 	}
 }
