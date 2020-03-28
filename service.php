@@ -8,6 +8,7 @@ use Framework\Utils;
 
 class Service
 {
+
 	/**
 	 * Load the list of news
 	 *
@@ -283,6 +284,16 @@ class Service
 	}
 
 	/**
+	 * @param $name
+	 *
+	 * @return string
+	 */
+	public static function getCacheFileName($name): string
+	{
+		return TEMP_PATH.'cache/cubanet_'.$name.'_'.date('Ymd').'.tmp';
+	}
+
+	/**
 	 * Load cache
 	 *
 	 * @param $name
@@ -293,7 +304,7 @@ class Service
 	public static function loadCache($name, &$cacheFile = null)
 	{
 		$data = false;
-		$cacheFile = TEMP_PATH . 'cache/cubanet_'.$name.'_'.date('Ymd').'.tmp';
+		$cacheFile = self::getCacheFileName($name);
 		if (file_exists($cacheFile)) {
 			$data = unserialize(file_get_contents($cacheFile));
 		}
@@ -309,7 +320,7 @@ class Service
 	 */
 	public static function saveCache($name, $data, &$cacheFile = null)
 	{
-		$cacheFile = TEMP_PATH . 'cache/cubanet_'.$name.'_'.date('Ymd').'.tmp';
+		$cacheFile = self::getCacheFileName($name);
 		file_put_contents($cacheFile, serialize($data));
 	}
 }
