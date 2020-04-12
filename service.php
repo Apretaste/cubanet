@@ -133,7 +133,6 @@ class Service
 			];
 
 			// save cache in the temp folder
-			setlocale(LC_ALL, 'es_ES.UTF-8');
 			self::saveCache($notice, $cacheName);
 		}
 
@@ -199,7 +198,6 @@ class Service
 			});
 
 			// save cache in the temp folder
-			setlocale(LC_ALL, 'es_ES.UTF-8');
 			self::saveCache($articles, $cacheName);
 		}
 
