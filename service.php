@@ -56,8 +56,7 @@ class Service
 			}
 
 			// save cache in the temp folder
-			setlocale(LC_ALL, 'es_ES.UTF-8');
-			self::saveCache('news', $articles);
+			self::saveCache( $articles, 'news');
 		}
 
 		// send data to the template
@@ -135,7 +134,7 @@ class Service
 
 			// save cache in the temp folder
 			setlocale(LC_ALL, 'es_ES.UTF-8');
-			self::saveCache($cacheName, $notice);
+			self::saveCache($notice, $cacheName);
 		}
 
 		// get the image if exist
@@ -200,7 +199,7 @@ class Service
 
 			// save cache in the temp folder
 			setlocale(LC_ALL, 'es_ES.UTF-8');
-			self::saveCache($cacheName, $articles);
+			self::saveCache($articles, $cacheName);
 		}
 
 		// error if no articles were found for the tag
@@ -310,7 +309,6 @@ class Service
 		}
 		return $data;
 	}
-
 	/**
 	 * Save cache
 	 *
@@ -318,7 +316,7 @@ class Service
 	 * @param $data
 	 * @param null $cacheFile
 	 */
-	public static function saveCache($name, $data, &$cacheFile = null)
+	public static function saveCache($data, $name = 'cache', &$cacheFile = null)
 	{
 		$cacheFile = self::getCacheFileName($name);
 		file_put_contents($cacheFile, serialize($data));
