@@ -34,12 +34,12 @@ class Service
 
 			foreach ($rss->item as $item) {
 				$articles[] = [
-					'title' => strip_tags((string) $item->title),
-					'link' => (string) $item->link,
-					'pubDate' => date('m/d/Y H:i:s', (int) $item->timestamp),
+					'title' => strip_tags((string)$item->title),
+					'link' => (string)$item->link,
+					'pubDate' => date('m/d/Y H:i:s', (int)$item->timestamp),
 					'description' => str_replace([
 						'(Feed generated with FetchRSS)'
-					], '', strip_tags((string) $item->description)),
+					], '', strip_tags((string)$item->description)),
 					'category' => ['Noticias'],
 					'author' => 'Cubanet.org',
 
@@ -56,13 +56,13 @@ class Service
 			}
 
 			// save cache in the temp folder
-			self::saveCache( $articles, 'news');
+			self::saveCache($articles, 'news');
 		}
 
 		// send data to the template
 		$response->setCache(240);
 		$response->setLayout('cubanet.ejs');
-		$response->setTemplate('stories.ejs', ['articles' => $articles], [__DIR__.'/images/cubanet-logo.png']);
+		$response->setTemplate('stories.ejs', ['articles' => $articles], [__DIR__ . '/images/cubanet-logo.png']);
 	}
 
 	/**
@@ -84,15 +84,23 @@ class Service
 		// load from cache
 		$notice = false;
 		$query = $request->input->data->historia;
-		$cacheName = 'story_'.md5(preg_replace('/[^A-Za-z0-9]/', '', $query));
+		$cacheName = 'story_' . md5(preg_replace('/[^A-Za-z0-9]/', '', $query));
 		$notice = self::loadCache($cacheName);
 
 		// load from Cubanet
 		if (!is_array($notice)) {
-			Crawler::start("https://www.cubanet.org/$query");
+			Crawler::start($query);
 
 			// search for title
-			$title = Crawler::filter('header h1.entry-title')->text();
+			$title = Crawler::filter('header h1.entry-title');
+			if ($title->count() > 0) $title = $title->text();
+			else {
+				$this->simpleMessage(
+					'Articulo no encontrado',
+					'El articulo que buscas no fue encontrado.'
+				);
+				return;
+			}
 
 			// get the intro
 			$titleObj = Crawler::filter('header div>p');
@@ -138,8 +146,8 @@ class Service
 
 		// get the image if exist
 		$img = $notice['img'] ? SHARED_PUBLIC_PATH . "content/cubanet/{$notice['img']}" : false;
-                $images = $img ? [$img] : [];
-		$images[] = __DIR__.'/images/cubanet-logo.png';
+		$images = $img ? [$img] : [];
+		$images[] = __DIR__ . '/images/cubanet-logo.png';
 
 		// send data to the template
 		$response->setCache();
@@ -169,13 +177,13 @@ class Service
 		$articles = false;
 		$query = $request->input->data->query;
 		$cleanQuery = md5($this->clean($query));
-		$cacheName = 'category_'.$cleanQuery;
+		$cacheName = 'category_' . $cleanQuery;
 		$articles = self::loadCache($cacheName);
 
 		// load from Cubanet
 		if (!is_array($articles)) {
 			// Setup crawler
-			Crawler::start('https://www.cubanet.org/tag/'.urlencode($cleanQuery));
+			Crawler::start('https://www.cubanet.org/tag/' . urlencode($cleanQuery));
 
 
 			$articles = [];
@@ -210,7 +218,7 @@ class Service
 		// send data to the template
 		//$response->setCache(240);
 		$response->setLayout('cubanet.ejs');
-		$response->setTemplate('tags.ejs', ['articles' => $articles, 'category' => $query], [__DIR__.'/images/cubanet-logo.png']);
+		$response->setTemplate('tags.ejs', ['articles' => $articles, 'category' => $query], [__DIR__ . '/images/cubanet-logo.png']);
 	}
 
 	/**
@@ -257,10 +265,10 @@ class Service
 	/**
 	 * Cut a string without breaking words
 	 *
-	 * @author salvipascual
 	 * @param String $text
 	 * @param Integer $count
 	 * @return String
+	 * @author salvipascual
 	 */
 	public static function truncate($text, $count)
 	{
@@ -288,7 +296,7 @@ class Service
 	 */
 	public static function getCacheFileName($name): string
 	{
-		return TEMP_PATH.'cache/cubanet_'.$name.'_'.date('Ymd').'.tmp';
+		return TEMP_PATH . 'cache/cubanet_' . $name . '_' . date('Ymd') . '.tmp';
 	}
 
 	/**
@@ -308,6 +316,7 @@ class Service
 		}
 		return $data;
 	}
+
 	/**
 	 * Save cache
 	 *
