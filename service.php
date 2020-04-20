@@ -120,7 +120,13 @@ class Service
 				if (!empty($imgUrl)) {
 					$imgName = Utils::randomHash() . '.' . pathinfo($imgUrl, PATHINFO_EXTENSION);
 					$img = SHARED_PUBLIC_PATH . "content/cubanet/$imgName";
-					file_put_contents($img, Crawler::get($imgUrl));
+					try {
+						$imgData = Crawler::get($imgUrl);
+						file_put_contents($img, $imgData);
+					} catch (Exception $e) {
+						$imgName = '';
+						$img = '';
+					}
 				}
 			}
 
