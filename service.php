@@ -1,5 +1,6 @@
 <?php
 
+use Framework\Alert;
 use Framework\Crawler;
 use Apretaste\Request;
 use Apretaste\Response;
@@ -16,7 +17,7 @@ class Service
 	 * @param Response $response
 	 *
 	 * @throws \FeedException
-	 * @throws \Framework\Alert
+	 * @throws Alert
 	 */
 	public function _main(Request $request, Response &$response)
 	{
@@ -49,7 +50,8 @@ class Service
 			if (empty($articles)) {
 				$this->simpleMessage(
 					'Servicio no disponible',
-					'El servicio Cubanet no se encuentra disponible en estos momentos. Intente luego y si el problema persiste contacte al soporte. Disculpe las molestias.'
+					'El servicio Cubanet no se encuentra disponible en estos momentos. Intente luego y si el problema persiste contacte al soporte. Disculpe las molestias.',
+					$response
 				);
 
 				return;
@@ -71,7 +73,7 @@ class Service
 	 * @param Request $request
 	 * @param Response $response
 	 *
-	 * @throws \Framework\Alert
+	 * @throws Alert
 	 */
 	public function _historia(Request $request, Response &$response)
 	{
@@ -97,7 +99,8 @@ class Service
 			else {
 				$this->simpleMessage(
 					'Articulo no encontrado',
-					'El articulo que buscas no fue encontrado.'
+					'El articulo que buscas no fue encontrado.',
+					$response
 				);
 				return;
 			}
@@ -169,7 +172,7 @@ class Service
 	 * @param Request $request
 	 * @param Response $response
 	 *
-	 * @throws \Framework\Alert
+	 * @throws Alert
 	 */
 	public function _categoria(Request $request, Response &$response)
 	{
@@ -234,7 +237,7 @@ class Service
 	 * @param String $title
 	 * @param String $desc
 	 *
-	 * @throws \Framework\Alert
+	 * @throws Alert
 	 * @author salvipascual
 	 */
 	private function error(Response &$response, $title, $desc)
@@ -334,5 +337,19 @@ class Service
 	{
 		$cacheFile = self::getCacheFileName($name);
 		file_put_contents($cacheFile, serialize($data));
+	}
+
+	/**
+	 * @param string $header
+	 * @param string $text
+	 * @param Response $response
+	 * @throws Alert
+	 */
+	public function simpleMessage(string $header, string $text, Response &$response): void
+	{
+		$response->setTemplate('message.ejs', [
+			'header' => html_entity_decode($header),
+			'text' => html_entity_decode($text)
+		]);
 	}
 }
